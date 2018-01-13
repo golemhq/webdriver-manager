@@ -13,7 +13,6 @@ class Geckodriver(Basedriver):
     base_filename = 'geckodriver'
 
     def _get_geckodriver_download_url(self, version, os_name, os_bits):
-
         os_suffix = ''
         if os_name == 'windows':
             if os_bits == 32:

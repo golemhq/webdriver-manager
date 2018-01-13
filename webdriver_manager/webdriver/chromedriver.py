@@ -12,7 +12,6 @@ class Chromedriver(Basedriver):
     base_filename = 'chromedriver'
 
     def _get_chromedriver_download_url(self, version, os_name):
-        
         os_suffix = ''
         if os_name == 'windows':
             os_suffix = 'win32'
@@ -23,9 +22,7 @@ class Chromedriver(Basedriver):
         else:
             raise Exception(('Could not generate filename for '
                              'geckodrive in {}'.format(os_name)))
-
         filename = 'chromedriver_{}.zip'.format(os_suffix)
-
         url = '{}/{}/{}'.format(config.CHROMEDRIVER_STORAGE_URL,
                                 version, filename)
         return url

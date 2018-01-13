@@ -1,4 +1,5 @@
 import sys
+import os
 import platform
 from distutils.version import StrictVersion
 
@@ -8,6 +9,23 @@ from .webdriver import chromedriver, geckodriver
 
 EXPECTED_MAXSIZE_32 = 2**31 - 1
 EXPECTED_MAXSIZE_64 = 2**63 - 1
+
+
+def normalize_outputdir(outputdir_raw=None):
+    """ if output dir is None try using the ./drivers directory
+    if it already exists, otherwise use the current working directory
+    """
+    outputdir = ''
+    cwd = os.getcwd()
+    if not outputdir_raw:
+        outputdir_drivers = os.path.join(cwd, 'drivers')
+        if os.path.isdir(outputdir_drivers):
+            outputdir = outputdir_drivers
+        else:
+            outputdir = cwd
+    else:
+        outputdir = os.path.join(cwd, outputdir_raw)
+    return outputdir
 
 
 def get_platform():
