@@ -4,6 +4,7 @@
 #ALL_DRIVERS = ['chrome', 'firefox', 'ie', 'edge']
 ALL_DRIVERS = ['chrome', 'firefox']
 DEFAULT_DRIVERS = ['chrome', 'firefox']
+BASE_DRIVER_FILENAMES = ['chromedriver', 'geckodriver']
 
 CHROMEDRIVER_STORAGE_URL = 'https://chromedriver.storage.googleapis.com'
 CHROMEDRIVER_LATEST_FILE = 'https://chromedriver.storage.googleapis.com/LATEST_RELEASE'

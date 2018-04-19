@@ -3,16 +3,10 @@ import argparse
 
 USAGE_MSG = """
 Usage:
-  webdriver-manager update
-  webdriver-manager update [-d|--drivers -o|--outputdir -v|--version]
-  webdriver-manager versions [-d | --drivers]
-  webdriver-manager versions [-l | --latest]
-  webdriver-manager versions [-o | --outputdir]
-  webdriver-manager version <driver-name> [-l | --latest]
+  webdriver-manager update [-d|--drivers -o|--outputdir]
+  webdriver-manager versions [-d|--drivers -o|--outputdir]
+  webdriver-manager clean [-d|--drivers -o|--outputdir]
   webdriver-manager -h | --help
-
-Options:
-  -d --drivers  
 """
 
 HELP_MSG = """
@@ -26,7 +20,6 @@ webdriver-manager update
   update optional arguments:
   -d | --drivers :   define a list of drivers to download
   -o | --outputdir : define the output directory
-  -v | --version :   specify a version to download
 
 webdriver-manager versions
 
@@ -35,24 +28,35 @@ webdriver-manager versions
   versions optional arguments
   -d | --drivers :   select which drivers to list
   -o | --outputdir : define the directory to look for webdriver executables
-  -l | --latest : list only the latest versions  
 """
 
 
 def get_parser():
-    parser = argparse.ArgumentParser(description='Process some integers.')
+    parser = argparse.ArgumentParser()
 
+    subparsers = parser.add_subparsers(dest='action')
 
-    subparsers = parser.add_subparsers(help='sub-command help')
-
-    parser_update = subparsers.add_parser('update', help='update help')
-    
+    parser_update = subparsers.add_parser('update')
     parser_update.add_argument('-d', '--drivers', action='store',
-                               nargs='*', type=str, metavar='',
+                               nargs='*', type=str,
                                default=[],
                                help='list of drivers to download. By default, download all')
     parser_update.add_argument('-o', '--outputdir', nargs='?', type=str,
                                metavar='', default=None, help='directory to use. By default use current or /drivers if it exists')
 
+    parser_clean = subparsers.add_parser('clean')
+    parser_clean.add_argument('-d', '--drivers', action='store',
+                               nargs='*', type=str,
+                               default=[],
+                               help='')
+    parser_clean.add_argument('-o', '--outputdir', nargs='?', type=str,
+                              default=None)
+
+    parser_clean = subparsers.add_parser('versions')
+    parser_clean.add_argument('-d', '--drivers', action='store',
+                               nargs='*', type=str,
+                               default=[])
+    parser_clean.add_argument('-o', '--outputdir', nargs='?', type=str,
+                               default=None)
 
     return parser
