@@ -24,7 +24,7 @@ def update(driver_name, outputdir, version=None):
             latest_remote_version = driver.get_latest_remote_version()
             driver.download_driver_executable(version=latest_remote_version)
     else:
-        logger.logger.info('{} up to date'.format(driver_name))
+        logger.logger.info('{} is up to date'.format(driver_name))
 
 
 def clean(outputdir, drivers=None):
@@ -70,15 +70,16 @@ def clean(outputdir, drivers=None):
 
 
 def versions(outputdir, drivers=None):
-    files = os.listdir(outputdir)
     found_versions = {}
+    files = os.listdir(outputdir)
     for file in files:
         for base_filename in config.BASE_DRIVER_FILENAMES:
-            if not base_filename in found_versions:
-                found_versions[base_filename] = []
             if file.startswith(base_filename):
-                found_versions[base_filename].append(file)
-    
+                if not base_filename in found_versions:
+                    found_versions[base_filename] = []
+                item = (helpers.extract_version_from_filename(file), file)
+                found_versions[base_filename].append(item)
+
     if drivers:
         # filter found_versions to only the required drivers
         driver_filenames = [helpers.driver_to_executable_filename(x) for x in drivers]
@@ -89,7 +90,8 @@ def versions(outputdir, drivers=None):
         found_versions = filtered
 
     for base_driver_filename, files in found_versions.items():
-        versions = [helpers.extract_version_from_filename(file) for file in files]
+        # versions = [helpers.extract_version_from_filename(file) for file in files]
+        versions = [item[0] for item in files]
         version_string = ', '.join(versions)
         plural = 's' if len(versions) > 1 else ''
         msg = '{} version{} found: {}'.format(base_driver_filename, plural, version_string)

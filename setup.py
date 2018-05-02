@@ -30,7 +30,7 @@ setup(
     install_requires=['requests', 'tqdm'],
     tests_require=['pytest'],
     include_package_data=True,
-    entry_points={  # Optional
+    entry_points={
         'console_scripts': [
             'webdriver-manager=webdriver_manager.main:main',
         ],

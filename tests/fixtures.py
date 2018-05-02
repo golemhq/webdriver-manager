@@ -30,7 +30,7 @@ def _directory_fixture():
 
 
 @pytest.fixture(scope="session")
-def dir_fixture():    
+def dir_session():    
     full_path, dir_name = _directory_fixture()
     os.chdir(full_path)
     yield {
@@ -38,11 +38,11 @@ def dir_fixture():
             'base_path': BASE_DIR,
             'name': dir_name}
     os.chdir(BASE_DIR)
-    shutil.rmtree(dir_name, ignore_errors=True)
+    shutil.rmtree(full_path, ignore_errors=True)
 
 
 @pytest.fixture(scope="function")
-def func_dir_fixture():    
+def dir_function():    
     full_path, dir_name = _directory_fixture()
     os.chdir(full_path)
     yield {
@@ -50,4 +50,4 @@ def func_dir_fixture():
             'base_path': BASE_DIR,
             'name': dir_name}
     os.chdir(BASE_DIR)
-    shutil.rmtree(dir_name, ignore_errors=True)
+    shutil.rmtree(full_path, ignore_errors=True)

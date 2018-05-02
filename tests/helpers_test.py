@@ -3,94 +3,94 @@ import io
 
 import pytest
 
-from tests.fixtures import dir_fixture, func_dir_fixture
+from tests.fixtures import dir_session, dir_function
 
 from webdriver_manager import helpers
 
 
 class Test_normalize_outputdir:
 
-    def test_normalize_outputdir_no_params(self, dir_fixture):
-        os.chdir(dir_fixture['path'])
+    def test_normalize_outputdir_no_params(self, dir_session):
+        os.chdir(dir_session['path'])
         outputdir = helpers.normalize_outputdir()
-        assert outputdir == dir_fixture['path']
+        assert outputdir == dir_session['path']
 
-    def test_normalize_outputdir_None(self, dir_fixture):
-        os.chdir(dir_fixture['path'])
+    def test_normalize_outputdir_None(self, dir_session):
+        os.chdir(dir_session['path'])
         outputdir = helpers.normalize_outputdir(None)
-        assert outputdir == dir_fixture['path']
+        assert outputdir == dir_session['path']
 
-    def test_normalize_outputdir_None_drivers_path_exists(self, func_dir_fixture):
-        os.chdir(func_dir_fixture['path'])
-        drivers_path = os.path.join(func_dir_fixture['path'], 'drivers')
+    def test_normalize_outputdir_None_drivers_path_exists(self, dir_function):
+        os.chdir(dir_function['path'])
+        drivers_path = os.path.join(dir_function['path'], 'drivers')
         os.makedirs(drivers_path)
         outputdir = helpers.normalize_outputdir(None)
         assert outputdir == drivers_path    
 
-    def test_normalize_outputdir_no_slashes(self, dir_fixture):
-        os.chdir(dir_fixture['path'])
+    def test_normalize_outputdir_no_slashes(self, dir_session):
+        os.chdir(dir_session['path'])
         outputdir = helpers.normalize_outputdir('example')
-        expected = os.path.join(dir_fixture['path'], 'example')
+        expected = os.path.join(dir_session['path'], 'example')
         assert outputdir == expected
 
-    def test_normalize_outputdir_beginning_slash(self, dir_fixture):
-        os.chdir(dir_fixture['path'])
+    def test_normalize_outputdir_beginning_slash(self, dir_session):
+        os.chdir(dir_session['path'])
         outputdir = helpers.normalize_outputdir('/example')
         expected = os.path.abspath('/example')
         assert outputdir == expected
 
     @pytest.mark.skipif('helpers.get_platform()["os_name"] != "windows"')
-    def test_normalize_outputdir_beginning_backslash(self, dir_fixture):
-        os.chdir(dir_fixture['path'])
+    def test_normalize_outputdir_beginning_backslash(self, dir_session):
+        os.chdir(dir_session['path'])
         outputdir = helpers.normalize_outputdir('\example')
         expected = os.path.abspath('\example')
         assert outputdir == expected
 
     @pytest.mark.skipif('helpers.get_platform()["os_name"] != "windows"')
-    def test_normalize_outputdir_beginning_dot_slash(self, dir_fixture):
-        os.chdir(dir_fixture['path'])
+    def test_normalize_outputdir_beginning_dot_slash(self, dir_session):
+        os.chdir(dir_session['path'])
         outputdir = helpers.normalize_outputdir('./example')
-        expected = os.path.join(dir_fixture['path'], 'example')
+        expected = os.path.join(dir_session['path'], 'example')
         assert outputdir == expected
 
-    def test_normalize_outputdir_beginning_dot_backslash(self, dir_fixture):
-        os.chdir(dir_fixture['path'])
+    def test_normalize_outputdir_beginning_dot_backslash(self, dir_session):
+        os.chdir(dir_session['path'])
         outputdir = helpers.normalize_outputdir('.\example')
-        expected = os.path.join(dir_fixture['path'], 'example')
+        expected = os.path.join(dir_session['path'], 'example')
         assert outputdir == expected
 
-    def test_normalize_outputdir_absolute_path(self, dir_fixture):
-        os.chdir(dir_fixture['path'])
-        absolute_path = os.path.join(dir_fixture['path'], 'drivers')
+    def test_normalize_outputdir_absolute_path(self, dir_session):
+        os.chdir(dir_session['path'])
+        absolute_path = os.path.join(dir_session['path'], 'drivers')
         outputdir = helpers.normalize_outputdir(absolute_path)
         assert outputdir == absolute_path
 
     @pytest.mark.skipif('helpers.get_platform()["os_name"] != "windows"')
-    def test_normalize_outputdir_absolute_path_windows(self, dir_fixture):
-        os.chdir(dir_fixture['path'])
+    def test_normalize_outputdir_absolute_path_windows(self, dir_session):
+        os.chdir(dir_session['path'])
         absolute_path = 'C:\\absolute\\path'
         outputdir = helpers.normalize_outputdir(absolute_path)
         assert outputdir == absolute_path
 
     @pytest.mark.skipif('helpers.get_platform()["os_name"] != "windows"')
-    def test_normalize_outputdir_absolute_path_windows_end_backlash(self, dir_fixture):
-        os.chdir(dir_fixture['path'])
+    def test_normalize_outputdir_absolute_path_windows_end_backlash(self, dir_session):
+        os.chdir(dir_session['path'])
         absolute_path = 'C:\\absolute\\path\\'
         expected = 'C:\\absolute\\path'
         outputdir = helpers.normalize_outputdir(absolute_path)
         assert outputdir == expected
 
-    def test_normalize_outputdir_backslash_escaped_char(self, dir_fixture):
-        os.chdir(dir_fixture['path'])
+    def test_normalize_outputdir_backslash_escaped_char(self, dir_session):
+        os.chdir(dir_session['path'])
         outputdir = helpers.normalize_outputdir('\\bbb')
         expected = os.path.abspath('\\bbb')
         assert outputdir == expected
 
     @pytest.mark.skipif('helpers.get_platform()["os_name"] != "windows"')
-    def test_normalize_outputdir_dot_backslash_escaped_char(self, dir_fixture):
-        os.chdir(dir_fixture['path'])
+    def test_normalize_outputdir_dot_backslash_escaped_char(self, dir_session):
+        os.chdir(dir_session['path'])
         outputdir = helpers.normalize_outputdir('.\\b\\n\\t')
-        expected = os.path.join(dir_fixture['path'], 'b', 'n', 't')
+        expected = os.path.join(dir_session['path'], 'b', 'n', 't')
         assert outputdir == expected
 
 
