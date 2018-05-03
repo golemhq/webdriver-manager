@@ -1,7 +1,6 @@
 import os
 from setuptools import setup, find_packages
-
-import webdriver_manager
+from setuptools.command.test import test as TestCommand
 
 
 here = os.path.abspath(os.path.dirname(__file__))
@@ -21,7 +20,7 @@ class PyTest(TestCommand):
 
 setup(
     name='webdriver-manager',
-    version=webdriver_manager.__version__,
+    version='0.0.1',
     description='Webdriver executable manager utility',
     url='https://github.com/lucianopuccio/webdriver-manager',
     license='MIT',
