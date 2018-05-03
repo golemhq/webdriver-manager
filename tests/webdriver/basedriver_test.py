@@ -12,28 +12,24 @@ from tests import test_utils
 class Test_get_driver_full_filename:
 
     def test_get_driver_full_filename_chrome(self):
-        # outputdir = helpers.normalize_outputdir()
         platform = helpers.get_platform()
         driver = Chromedriver('', 'linux', platform['os_bits'])
         full_name = driver.get_driver_full_filename('2.2')
         assert full_name == 'chromedriver_2.2'
 
     def test_get_driver_full_filename_chrome_windows(self):
-        # outputdir = helpers.normalize_outputdir()
         platform = helpers.get_platform()
         driver = Chromedriver('', 'windows', platform['os_bits'])
         full_name = driver.get_driver_full_filename('2.2')
         assert full_name == 'chromedriver_2.2.exe'
 
     def test_get_driver_full_filename_firefox(self):
-        # outputdir = helpers.normalize_outputdir()
         platform = helpers.get_platform()
         driver = Geckodriver('', 'linux', platform['os_bits'])
         full_name = driver.get_driver_full_filename('2.2')
         assert full_name == 'geckodriver_2.2'
 
     def test_get_driver_full_filename_firefox_windows(self):
-        # outputdir = helpers.normalize_outputdir()
         platform = helpers.get_platform()
         driver = Geckodriver('', 'windows', platform['os_bits'])
         full_name = driver.get_driver_full_filename('2.2')

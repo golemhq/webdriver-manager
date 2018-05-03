@@ -28,7 +28,7 @@ class Test_update:
         assert files == [expected_file]
         log_records = caplog.records
         assert log_records[0].levelname == 'INFO'
-        assert log_records[0].message == 'updating chrome'
+        assert log_records[0].message == 'updating chromedriver'
         assert log_records[1].levelname == 'INFO'
         assert log_records[1].message == 'got {}'.format(expected_file)
 
@@ -45,7 +45,7 @@ class Test_update:
         update('chrome', outputdir)
         record = caplog.records[0]
         assert record.levelname == 'INFO'
-        assert record.message == 'chrome is up to date'
+        assert record.message == 'chromedriver is up to date'
 
     @pytest.mark.slow
     def test_update_firefox_to_latest(self, dir_function, caplog):
@@ -62,7 +62,7 @@ class Test_update:
         assert files == [expected_file]
         log_records = caplog.records
         assert log_records[0].levelname == 'INFO'
-        assert log_records[0].message == 'updating firefox'
+        assert log_records[0].message == 'updating geckodriver'
         assert log_records[1].levelname == 'INFO'
         assert log_records[1].message == 'got {}'.format(expected_file)
 
@@ -81,7 +81,7 @@ class Test_update:
         update('firefox', outputdir)
         record = caplog.records[0]
         assert record.levelname == 'INFO'
-        assert record.message == 'firefox is up to date'
+        assert record.message == 'geckodriver is up to date'
 
     def test_update_chrome_version_does_not_exist(self, dir_function, caplog):
         os.chdir(dir_function['path'])
@@ -93,7 +93,7 @@ class Test_update:
             update('chrome', outputdir, version=version)
         log_records = caplog.records
         assert log_records[0].levelname == 'INFO'
-        assert log_records[0].message == 'updating chrome'
+        assert log_records[0].message == 'updating chromedriver'
         assert log_records[1].levelname == 'ERROR'
         url = driver._get_chromedriver_download_url(version)
         msg = ('there was a 404 error trying to reach {} \nThis probably '

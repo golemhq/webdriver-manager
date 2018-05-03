@@ -1,5 +1,4 @@
 import zipfile
-import json
 
 import requests
 
@@ -27,7 +26,7 @@ class Geckodriver(Basedriver):
                 os_suffix = 'linux64.tar.gz'
         else:
             raise Exception(('Could not generate filename for '
-                             'geckodrive in {}'.format(self.os_name)))
+                             'geckodriver in {}'.format(self.os_name)))
         filename = 'geckodriver-v{}-{}'.format(version, os_suffix)
         url = '{}/v{}/{}'.format(config.GECKODRIVER_URL_BASE,
                                 version, filename)
@@ -41,6 +40,7 @@ class Geckodriver(Basedriver):
                 response = requests.get(config.GECKODRIVER_LASTEST_URL)
                 latest_version = response.json().get('tag_name')
                 latest_version = latest_version.replace('v', '')
+                self.latest_remote_version = latest_version
             except:
                 raise Exception('Could not get latest remote version for geckodriver')
         if strict:

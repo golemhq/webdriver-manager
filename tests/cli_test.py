@@ -62,9 +62,9 @@ class Test_udpate:
         assert len(files) == 2
         assert expected_file_chrome in files
         assert expected_file_gecko in files
-        assert 'INFO updating chrome' in result
+        assert 'INFO updating chromedriver' in result
         assert 'INFO got {}'.format(expected_file_chrome) in result
-        assert 'INFO updating firefox' in result
+        assert 'INFO updating geckodriver' in result
         assert 'INFO got {}'.format(expected_file_gecko) in result
 
     @pytest.mark.slow
@@ -118,7 +118,7 @@ class Test_udpate:
             filename += '.exe'
         open(filename, 'w+').close()
         result = run_command('webdriver-manager update -d chrome')
-        assert result == 'INFO chrome is up to date'
+        assert result == 'INFO chromedriver is up to date'
 
     @pytest.mark.slow
     def test_update_local_version_lower_than_remote(self, dir_function):
@@ -129,7 +129,7 @@ class Test_udpate:
             filename += '.exe'
         open(filename, 'w+').close()
         result = run_command('webdriver-manager update -d chrome')
-        assert 'INFO updating chrome' in result
+        assert 'INFO updating chromedriver' in result
         assert 'INFO got chromedriver_' in result
         files = os.listdir()
         assert len(files) == 2
@@ -142,7 +142,7 @@ class Test_udpate:
         if helpers.get_platform()['os_name'] == 'windows':
             filename += '.exe'
         result = run_command('webdriver-manager update -d chrome=2.38')
-        assert 'INFO updating chrome' in result
+        assert 'INFO updating chromedriver' in result
         assert 'INFO got {}'.format(filename) in result
         files = os.listdir()
         assert files == [filename]
@@ -166,8 +166,7 @@ class Test_udpate:
             filename += '.exe'
         open(filename, 'w+').close()
         result = run_command('webdriver-manager update -d chrome=2.38')
-        expected = ('INFO updating chrome\n'
-                    'WARNING file chromedriver_2.38.exe already exists, skipping')
+        expected = ('WARNING file chromedriver_2.38.exe already exists, skipping')
         assert result == expected
 
     def test_update_specified_driver_is_incorrect(self, dir_function):

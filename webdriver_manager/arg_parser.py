@@ -20,7 +20,8 @@ Usage: webdriver-manager update [-d|--drivers] [-o|--outputdir]
   directory if this already exists.
 
   update optional arguments:
-  -d | --drivers     define a list of drivers to download
+  -d | --drivers     define a list of drivers to download.
+                     Specify a version with `-d chrome=2.2`
   -o | --outputdir   define the output directory. Default is current
                      directory or ./drivers if it exists.
 """

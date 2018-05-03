@@ -1,7 +1,7 @@
 import os
 
-from . import helpers, config, logger
-
+from . import helpers, config
+from .logger import logger
 
 __version__ = '0.0.1'
 
@@ -10,29 +10,27 @@ def update(driver_name, outputdir, version=None):
     """Update local driver executable to the latest version or
     a specific version.
     driver : a driver name. Options:
-     - chrome
-     - firefox
+     - chrome, chromedriver
+     - firefox, gecko, geckodriver
     """
     platform = helpers.get_platform()
+    driver_name = helpers.normalize_driver_name(driver_name)
     driver_class = helpers.get_driver_class(driver_name)
     driver = driver_class(outputdir, platform['os_name'], platform['os_bits'])
     if version:
-        logger.logger.info('updating {}'.format(driver_name))
         driver.download_driver_executable(version=version)
     elif driver.is_remote_higher_than_local():
-            logger.logger.info('updating {}'.format(driver_name))
             latest_remote_version = driver.get_latest_remote_version()
             driver.download_driver_executable(version=latest_remote_version)
     else:
-        logger.logger.info('{} is up to date'.format(driver_name))
+        logger.info('{} is up to date'.format(driver_name))
 
 
 def clean(outputdir, drivers=None):
     """Remove driver executables from the specified outputdir.
     
     drivers can be a list of drivers to filter which executables
-    to remove. Use browser names instead i.e.: 'firefox', 'chrome'.
-    Specify a version using an equal sign i.e.: 'chrome=2.2'
+    to remove. Specify a version using an equal sign i.e.: 'chrome=2.2'
     """
     if drivers:
         # Generate a list of tuples: [(driver_name, requested_version)]
@@ -40,10 +38,13 @@ def clean(outputdir, drivers=None):
         # of the tuple is None.
         # Example:
         # [('driver_a', '2.2'), ('driver_b', None)]
-        drivers_split = [helpers.split_driver_name_and_version(driver) for driver in drivers] 
-        file_data = [(helpers.driver_to_executable_filename(x[0]), x[1]) for x in drivers_split]
+        drivers_split = [helpers.split_driver_name_and_version(x) for x in drivers]
+        file_data = [(helpers.normalize_driver_name(x[0]), x[1]) for x in drivers_split]
+        # drivers = [helpers.normalize_driver_name(x) for x in drivers]
+        # drivers_split = [helpers.split_driver_name_and_version(x) for x in drivers]
+        # file_data = [(helpers.(x[0]), x[1]) for x in drivers_split]
     else:
-        file_data = [(x, None) for x in config.BASE_DRIVER_FILENAMES]
+        file_data = [(x, None) for x in config.ALL_DRIVERS]
 
     files = [file for file in os.listdir(outputdir)
              if os.path.isfile(os.path.join(outputdir, file))]
@@ -65,7 +66,7 @@ def clean(outputdir, drivers=None):
                 except OSError:
                     pass
                 finally:
-                    logger.logger.info('removed {}'.format(file))
+                    logger.info('removed {}'.format(file))
                     break
 
 
@@ -73,7 +74,7 @@ def versions(outputdir, drivers=None):
     found_versions = {}
     files = os.listdir(outputdir)
     for file in files:
-        for base_filename in config.BASE_DRIVER_FILENAMES:
+        for base_filename in config.ALL_DRIVERS:
             if file.startswith(base_filename):
                 if not base_filename in found_versions:
                     found_versions[base_filename] = []
@@ -82,7 +83,7 @@ def versions(outputdir, drivers=None):
 
     if drivers:
         # filter found_versions to only the required drivers
-        driver_filenames = [helpers.driver_to_executable_filename(x) for x in drivers]
+        driver_filenames = [helpers.normalize_driver_name(x) for x in drivers]
         filtered = {}
         for key, value in found_versions.items():
             if key in driver_filenames:
@@ -95,6 +96,6 @@ def versions(outputdir, drivers=None):
         version_string = ', '.join(versions)
         plural = 's' if len(versions) > 1 else ''
         msg = '{} version{} found: {}'.format(base_driver_filename, plural, version_string)
-        logger.logger.info(msg)
+        logger.info(msg)
 
     return found_versions

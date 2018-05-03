@@ -94,14 +94,36 @@ class Test_normalize_outputdir:
         assert outputdir == expected
 
 
+
+class Test_normalize_driver_name:
+
+    driver_names = [
+        ('chrome', 'chromedriver'),
+        ('chromedriver', 'chromedriver'),
+        ('firefox', 'geckodriver'),
+        ('gecko', 'geckodriver'),
+        ('geckodriver', 'geckodriver')
+    ]
+
+    @pytest.mark.parametrize('driver_name, expected', driver_names)
+    def test_normalize_driver_name(self, driver_name, expected):
+        result = helpers.normalize_driver_name(driver_name)
+        assert result == expected
+
+    def test_normalize_driver_not_implemented(self):
+        with pytest.raises(Exception) as excinfo:
+            cls = helpers.normalize_driver_name('incorrect_driver')
+        assert str(excinfo.value) == 'driver incorrect_driver is not implemented'
+
+
 class Test_get_driver_class:
 
     def test_get_driver_class_chrome(self):
-        cls = helpers.get_driver_class('chrome')
+        cls = helpers.get_driver_class('chromedriver')
         assert repr(cls) == "<class 'webdriver_manager.webdriver.chromedriver.Chromedriver'>"
         
-    def test_get_driver_class_firefox(self):
-        cls = helpers.get_driver_class('firefox')
+    def test_get_driver_class_geckodriver(self):
+        cls = helpers.get_driver_class('geckodriver')
         assert repr(cls) == "<class 'webdriver_manager.webdriver.geckodriver.Geckodriver'>"
 
     def test_get_driver_class_incorrect_driver_name(self):
@@ -139,19 +161,3 @@ class Test_download_file_with_progress_bar:
         msg = ('there was a 404 error trying to reach {} \nThis probably '
                'means the requested version does not exist.'.format(url))
         assert caplog.records[0].message == msg
-
-
-class Test_driver_to_executable_filename:
-
-    def test_driver_to_executable_filename(self):
-        result = helpers.browser_to_driver_name('chrome')
-        assert result == 'chromedriver'
-
-    def test_driver_to_executable_filename(self):
-        result = helpers.browser_to_driver_name('firefox')
-        assert result == 'geckodriver'
-
-    def test_driver_to_executable_filename(self):
-        with pytest.raises(Exception) as excinfo:
-            cls = helpers.get_driver_class('incorrect_driver')
-        assert str(excinfo.value) == 'driver incorrect_driver is not implemented'

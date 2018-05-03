@@ -20,7 +20,7 @@ class Chromedriver(Basedriver):
             os_suffix = 'linux64'
         else:
             raise Exception(('Could not generate filename for '
-                             'geckodriver in {}'.format(self.os_name)))
+                             'chromedriver in {}'.format(self.os_name)))
         filename = 'chromedriver_{}.zip'.format(os_suffix)
         url = '{}/{}/{}'.format(config.CHROMEDRIVER_STORAGE_URL,
                                 version, filename)
@@ -33,6 +33,7 @@ class Chromedriver(Basedriver):
             try:
                 response = requests.get(config.CHROMEDRIVER_LATEST_FILE)
                 latest_version = response.text.strip()
+                self.latest_remote_version = latest_version
             except:
                 raise Exception('Could not get latest remote version for chromedriver')
         if strict:

@@ -1,5 +1,7 @@
 Webdriver Manager
 ==================================================
+[![Build Status](https://travis-ci.org/lucianopuccio/webdriver-manager.svg?branch=master)](https://travis-ci.org/lucianopuccio/webdriver-manager)
+
 
 A Selenium Webdriver executable manager utility written in Python.
 
@@ -53,9 +55,13 @@ webdriver-manager versions [-d | -o]
 # Using webdriver manager from code
 
 **Functions:**
+
 *webdriver_manager.update(driver_name, outputdir, version=None)*
+
 *webdriver_manager.clean(outputdir, drivers=None)*
+
 *webdriver_manager.versions(outputdir, drivers=None)*
+
 
 **Example usage**
 

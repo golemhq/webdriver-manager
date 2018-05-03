@@ -2,15 +2,25 @@ import os
 
 import requests
 
-from .. import config, helpers
+from .. import helpers
 from ..logger import logger
 
 
 class Basedriver:
-    
+    """Base driver class. Contains common methods.
+    It should be used through it's subclasses
+    """
     latest_remote_version = None
 
     def __init__(self, outputdir, os_name, os_bits):
+        """Instantiate a new webdriver class
+        Args:
+          outputdir:    The path to the directory to use.
+          os_name:      Valid options: ['windows', 'linux', 'mac']
+          os_bits:      Valid options: ['32', '64']
+        """
+        if type(self) == Basedriver:
+            raise Exception('Basedriver cannot be instantiated')
         self.outputdir = outputdir
         self.os_name = os_name
         self.os_bits = os_bits
@@ -26,10 +36,9 @@ class Basedriver:
         If no version is found, returns '0.0'
         """
         latest_version = '0.0'
-        webdriver_base_filename = self.base_filename
         # check if it already exists and it's version
         files = os.listdir(self.outputdir) if os.path.isdir(self.outputdir) else []
-        webdriver_files = [x for x in files if x.startswith(webdriver_base_filename)]
+        webdriver_files = [x for x in files if x.startswith(self.base_filename)]
         if webdriver_files:
             sorted_files = sorted(webdriver_files, reverse=True)
             latest_version_filename = sorted_files[0]
@@ -52,6 +61,7 @@ class Basedriver:
             logger.warning(('file {} already exists, skipping'
                             .format(webdriver_filename)))
         else:
+            logger.info('updating {}'.format(self.base_filename))
             os.makedirs(os.path.dirname(webdriver_path), exist_ok=True)
             remote_file_bytes = self.get_remote_file(version)
             with open(webdriver_path, 'wb') as webdriver_file:

@@ -32,8 +32,21 @@ def normalize_outputdir(outputdir=None):
     return normalized
 
 
-def get_platform():
+def normalize_driver_name(driver_name):
+    normalized = None
+    if driver_name in ['chrome', 'chromedriver']:
+        normalized = 'chromedriver'
+    elif driver_name in ['firefox', 'gecko', 'geckodriver']:
+        normalized = 'geckodriver'
+    else:
+        raise Exception('driver {} is not implemented'.format(driver_name))
+    return normalized
 
+
+def get_platform():
+    """Get the current platform data.
+    Returns a dictionary with keys: `os_name`, `os_bits`
+    """
     platform_data = {
         'os_name': None,
         'os_bits': None
@@ -62,9 +75,9 @@ def get_platform():
 
 def get_driver_class(driver_name):
     driver_class = None
-    if driver_name == 'chrome':
+    if driver_name == 'chromedriver':
         driver_class = chromedriver.Chromedriver
-    elif driver_name == 'firefox':
+    elif driver_name == 'geckodriver':
         driver_class = geckodriver.Geckodriver
     else:
         raise Exception('driver {} is not implemented'.format(driver_name))
@@ -94,9 +107,7 @@ def download_file_with_progress_bar(url):
     if request.status_code == 404:
         msg = ('there was a 404 error trying to reach {} \nThis probably '
                'means the requested version does not exist.'.format(url))
-        # raise Exception(msg)
         logger.error(msg)
-        import sys
         sys.exit()
     total_size = int(request.headers["Content-Length"])
     chunk_size = 1024
@@ -109,18 +120,10 @@ def download_file_with_progress_bar(url):
     return bytes_io
 
 
-def driver_to_executable_filename(browser):
-    driver_name = ''
-    if browser == 'chrome':
-        driver_name = 'chromedriver'
-    elif browser == 'firefox':
-        driver_name = 'geckodriver'
-    else:
-        raise Exception('driver {} is not implemented'.format(browser))
-    return driver_name
-
-
 def extract_version_from_filename(filename):
+    """Extract the version from a filename with the following
+    format: `filename_1.1` or `filename_1.1.exe`
+    """
     components = filename.replace('.exe', '').split('_')
     if len(components) == 2:
         return components[1]

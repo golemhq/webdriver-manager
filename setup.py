@@ -7,6 +7,18 @@ import webdriver_manager
 here = os.path.abspath(os.path.dirname(__file__))
 
 
+class PyTest(TestCommand):
+    def finalize_options(self):
+        TestCommand.finalize_options(self)
+        self.test_args = ['tests']
+        self.test_suite = True
+
+    def run_tests(self):
+        import pytest
+        errcode = pytest.main(self.test_args)
+        sys.exit(errcode)
+
+
 setup(
     name='webdriver-manager',
     version=webdriver_manager.__version__,
@@ -35,4 +47,5 @@ setup(
             'webdriver-manager=webdriver_manager.main:main',
         ],
     },
+    cmdclass={'test': PyTest}
 )
