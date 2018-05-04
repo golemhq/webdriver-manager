@@ -3,8 +3,6 @@ import io
 
 import pytest
 
-from tests.fixtures import dir_session, dir_function
-
 from webdriver_manager import helpers
 
 

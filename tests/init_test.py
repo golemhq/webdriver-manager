@@ -3,8 +3,8 @@ import sys
 
 import pytest
 
-from tests.fixtures import dir_session, dir_function
-from tests import test_utils
+# from tests.fixtures import dir_session, dir_function
+# from tests import test_utils
 
 from webdriver_manager import update, clean, versions, helpers
 from webdriver_manager.webdriver.chromedriver import Chromedriver
@@ -103,14 +103,14 @@ class Test_update:
 
 class Test_clean:
 
-    def test_clean(self, dir_function, caplog):
+    def test_clean(self, dir_function, test_utils, caplog):
         os.chdir(dir_function['path'])
         outputdir = helpers.normalize_outputdir()
         test_utils.create_test_files(outputdir)
         clean(outputdir)
         assert len(os.listdir(outputdir)) == 0
 
-    def test_clean_only_chrome(self, dir_function):
+    def test_clean_only_chrome(self, dir_function, test_utils):
         os.chdir(dir_function['path'])
         outputdir = helpers.normalize_outputdir()
         test_utils.create_test_files(outputdir)
@@ -120,7 +120,7 @@ class Test_clean:
         assert 'geckodriver_2.5' in files
         assert 'geckodriver_2.6' in files
 
-    def test_clean_only_firefox(self, dir_function):
+    def test_clean_only_firefox(self, dir_function, test_utils):
         os.chdir(dir_function['path'])
         outputdir = helpers.normalize_outputdir()
         test_utils.create_test_files(outputdir)
@@ -130,7 +130,7 @@ class Test_clean:
         assert 'chromedriver_2.2' in files
         assert 'chromedriver_2.3' in files
 
-    def test_clean_chrome_specific_version(self, dir_function):
+    def test_clean_chrome_specific_version(self, dir_function, test_utils):
         os.chdir(dir_function['path'])
         outputdir = helpers.normalize_outputdir()
         test_utils.create_test_files(outputdir)
@@ -141,7 +141,7 @@ class Test_clean:
         assert 'geckodriver_2.6' in files
         assert 'chromedriver_2.3' in files
 
-    def test_clean_only_chrome_windows(self, dir_function):
+    def test_clean_only_chrome_windows(self, dir_function, test_utils):
         os.chdir(dir_function['path'])
         outputdir = helpers.normalize_outputdir()
         test_utils.create_test_files_windows(outputdir)
@@ -151,7 +151,7 @@ class Test_clean:
         assert 'geckodriver_2.5.exe' in files
         assert 'geckodriver_2.6.exe' in files
 
-    def test_clean_only_chrome_windows_specific_version(self, dir_function):
+    def test_clean_only_chrome_windows_specific_version(self, dir_function, test_utils):
         os.chdir(dir_function['path'])
         outputdir = helpers.normalize_outputdir()
         test_utils.create_test_files_windows(outputdir)
@@ -162,7 +162,7 @@ class Test_clean:
         assert 'geckodriver_2.6.exe' in files
         assert 'chromedriver_2.3.exe' in files
 
-    def test_clean_multiple_drivers(self, dir_function):
+    def test_clean_multiple_drivers(self, dir_function, test_utils):
         os.chdir(dir_function['path'])
         outputdir = helpers.normalize_outputdir()
         test_utils.create_test_files(outputdir)
@@ -172,7 +172,7 @@ class Test_clean:
         assert 'geckodriver_2.6' in files
         assert 'chromedriver_2.3' in files
 
-    def test_clean_console_output(self, dir_function, caplog):
+    def test_clean_console_output(self, dir_function, test_utils, caplog):
         os.chdir(dir_function['path'])
         outputdir = helpers.normalize_outputdir()
         test_utils.create_test_files(outputdir)
@@ -186,7 +186,7 @@ class Test_clean:
 
 class Test_versions:
 
-    def test_versions_no_drivers_specified(self, dir_function, caplog):
+    def test_versions_no_drivers_specified(self, dir_function, test_utils, caplog):
         os.chdir(dir_function['path'])
         outputdir = helpers.normalize_outputdir()
         test_utils.create_test_files(outputdir)
@@ -202,7 +202,7 @@ class Test_versions:
         }
         assert result == expected
 
-    def test_versions_driver_specified(self, dir_function, caplog):
+    def test_versions_driver_specified(self, dir_function, test_utils, caplog):
         os.chdir(dir_function['path'])
         outputdir = helpers.normalize_outputdir()
         test_utils.create_test_files(outputdir)
@@ -216,7 +216,7 @@ class Test_versions:
         }
         assert result == expected
 
-    def test_versions_windows(self, dir_function, caplog):
+    def test_versions_windows(self, dir_function, test_utils, caplog):
         os.chdir(dir_function['path'])
         outputdir = helpers.normalize_outputdir()
         test_utils.create_test_files_windows(outputdir)

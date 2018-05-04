@@ -5,8 +5,8 @@ from webdriver_manager.webdriver.basedriver import Basedriver
 from webdriver_manager.webdriver.chromedriver import Chromedriver
 from webdriver_manager.webdriver.geckodriver import Geckodriver
 
-from tests.fixtures import dir_function
-from tests import test_utils
+# from tests.fixtures import dir_function
+# from tests import test_utils
 
 
 class Test_get_driver_full_filename:
@@ -38,7 +38,7 @@ class Test_get_driver_full_filename:
 
 class Test_get_latest_local_version:
 
-    def test_get_latest_local_version_chrome(self, dir_function):
+    def test_get_latest_local_version_chrome(self, dir_function, test_utils):
         os.chdir(dir_function['path'])
         outputdir = helpers.normalize_outputdir()
         platform = helpers.get_platform()
@@ -47,7 +47,7 @@ class Test_get_latest_local_version:
         latest_version = driver.get_latest_local_version()
         assert latest_version == '2.3'
 
-    def test_get_latest_local_version_chrome_windows(self, dir_function):
+    def test_get_latest_local_version_chrome_windows(self, dir_function, test_utils):
         os.chdir(dir_function['path'])
         outputdir = helpers.normalize_outputdir()
         platform = helpers.get_platform()
@@ -56,7 +56,7 @@ class Test_get_latest_local_version:
         latest_version = driver.get_latest_local_version()
         assert latest_version == '2.3'
 
-    def test_get_latest_local_version_firefox(self, dir_function):
+    def test_get_latest_local_version_firefox(self, dir_function, test_utils):
         os.chdir(dir_function['path'])
         outputdir = helpers.normalize_outputdir()
         platform = helpers.get_platform()
@@ -65,7 +65,7 @@ class Test_get_latest_local_version:
         latest_version = driver.get_latest_local_version()
         assert latest_version == '2.6'
 
-    def test_get_latest_local_version_firefox_windows(self, dir_function):
+    def test_get_latest_local_version_firefox_windows(self, dir_function, test_utils):
         os.chdir(dir_function['path'])
         outputdir = helpers.normalize_outputdir()
         platform = helpers.get_platform()
