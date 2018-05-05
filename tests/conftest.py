@@ -101,11 +101,17 @@ class Test_utils:
     @staticmethod
     def run_command(cmd):
         output = ''
-        p = subprocess.Popen(cmd, stdout=subprocess.PIPE,
-                             stderr=subprocess.STDOUT, shell=True)
-        for line in iter(p.stdout.readline, b''):
-            line_parsed = line.decode('ascii').replace('\r', '')
-            output += line_parsed
+        p = subprocess.Popen(cmd,
+                             stdout=subprocess.PIPE,
+                             stderr=subprocess.STDOUT,
+                             bufsize=0,
+                             shell=True,
+                             universal_newlines=True)
+        
+        output = p.stdout.read()
+        # for line in iter(p.stdout.readline, b''):
+        #     line_parsed = line.decode('ascii').replace('\r', '')
+        #     output += line_parsed
 
         if len(output) > 1 and output[-1] == '\n':
             output = output[:-1]

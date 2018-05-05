@@ -3,9 +3,6 @@ import sys
 
 import pytest
 
-# from tests.fixtures import dir_session, dir_function
-# from tests import test_utils
-
 from webdriver_manager import update, clean, versions, helpers
 from webdriver_manager.webdriver.chromedriver import Chromedriver
 from webdriver_manager.webdriver.geckodriver import Geckodriver
@@ -177,11 +174,9 @@ class Test_clean:
         outputdir = helpers.normalize_outputdir()
         test_utils.create_test_files(outputdir)
         clean(outputdir, drivers=['firefox=2.5', 'chrome=2.3'])
-        log_records = caplog.records
-        assert log_records[0].levelname == 'INFO'
-        assert log_records[0].message == 'removed chromedriver_2.3'
-        assert log_records[1].levelname == 'INFO'
-        assert log_records[1].message == 'removed geckodriver_2.5'
+        log_record_list = ['{} {}'.format(x.levelname, x.message) for x in caplog.records]
+        assert 'INFO removed chromedriver_2.3' in log_record_list
+        assert 'INFO removed geckodriver_2.5' in log_record_list
 
 
 class Test_versions:
@@ -191,11 +186,9 @@ class Test_versions:
         outputdir = helpers.normalize_outputdir()
         test_utils.create_test_files(outputdir)
         result = versions(outputdir)
-        log_records = caplog.records
-        assert log_records[0].levelname == 'INFO'
-        assert log_records[0].message == 'chromedriver versions found: 2.2, 2.3'
-        assert log_records[1].levelname == 'INFO'
-        assert log_records[1].message == 'geckodriver versions found: 2.5, 2.6'
+        log_record_list = ['{} {}'.format(x.levelname, x.message) for x in caplog.records]
+        assert 'INFO chromedriver versions found: 2.2, 2.3' in log_record_list
+        assert 'INFO geckodriver versions found: 2.5, 2.6' in log_record_list
         expected = {
             'chromedriver': [('2.2', 'chromedriver_2.2'), ('2.3', 'chromedriver_2.3')],
             'geckodriver': [('2.5', 'geckodriver_2.5'), ('2.6', 'geckodriver_2.6')]
@@ -221,11 +214,9 @@ class Test_versions:
         outputdir = helpers.normalize_outputdir()
         test_utils.create_test_files_windows(outputdir)
         result = versions(outputdir)
-        log_records = caplog.records
-        assert log_records[0].levelname == 'INFO'
-        assert log_records[0].message == 'chromedriver versions found: 2.2, 2.3'
-        assert log_records[1].levelname == 'INFO'
-        assert log_records[1].message == 'geckodriver versions found: 2.5, 2.6'
+        log_record_list = ['{} {}'.format(x.levelname, x.message) for x in caplog.records]
+        assert 'INFO chromedriver versions found: 2.2, 2.3' in log_record_list
+        assert 'INFO geckodriver versions found: 2.5, 2.6' in log_record_list
         expected = {
             'chromedriver': [('2.2', 'chromedriver_2.2.exe'), ('2.3', 'chromedriver_2.3.exe')],
             'geckodriver': [('2.5', 'geckodriver_2.5.exe'), ('2.6', 'geckodriver_2.6.exe')]

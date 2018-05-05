@@ -164,7 +164,7 @@ class Test_udpate:
             filename += '.exe'
         open(filename, 'w+').close()
         result = test_utils.run_command('webdriver-manager update -d chrome=2.38')
-        expected = ('WARNING file chromedriver_2.38.exe already exists, skipping')
+        expected = 'WARNING file {} already exists, skipping'.format(filename)
         assert result == expected
 
     def test_update_specified_driver_is_incorrect(self, dir_function, test_utils):

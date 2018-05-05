@@ -50,8 +50,8 @@ class Geckodriver(Basedriver):
     def get_remote_file(self, remote_version):
         url = self._get_geckodriver_download_url(remote_version)
         bytes_io = helpers.download_file_with_progress_bar(url)
-        zipf = zipfile.ZipFile(bytes_io)
-        file_list = zipf.namelist()
         expected_file = 'geckodriver.exe'if self.os_name == 'windows' else 'geckodriver'
-        geckodriver_file = zipf.read(expected_file)
-        return geckodriver_file
+        if url.endswith('tar.gz'):
+            return helpers.extract_file_from_tar(bytes_io, expected_file)
+        else:
+            return helpers.extract_file_from_zip(bytes_io, expected_file)

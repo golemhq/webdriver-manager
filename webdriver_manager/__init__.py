@@ -40,9 +40,6 @@ def clean(outputdir, drivers=None):
         # [('driver_a', '2.2'), ('driver_b', None)]
         drivers_split = [helpers.split_driver_name_and_version(x) for x in drivers]
         file_data = [(helpers.normalize_driver_name(x[0]), x[1]) for x in drivers_split]
-        # drivers = [helpers.normalize_driver_name(x) for x in drivers]
-        # drivers_split = [helpers.split_driver_name_and_version(x) for x in drivers]
-        # file_data = [(helpers.(x[0]), x[1]) for x in drivers_split]
     else:
         file_data = [(x, None) for x in config.ALL_DRIVERS]
 
@@ -80,6 +77,10 @@ def versions(outputdir, drivers=None):
                     found_versions[base_filename] = []
                 item = (helpers.extract_version_from_filename(file), file)
                 found_versions[base_filename].append(item)
+
+    # sort versions
+    for driver, versions in found_versions.items():
+        found_versions[driver] = sorted(versions)
 
     if drivers:
         # filter found_versions to only the required drivers

@@ -66,5 +66,9 @@ class Basedriver:
             remote_file_bytes = self.get_remote_file(version)
             with open(webdriver_path, 'wb') as webdriver_file:
                 webdriver_file.write(remote_file_bytes)
+                try:
+                    os.chmod(webdriver_path, 0o777)
+                except:
+                    pass
             logger.info('got {}'.format(webdriver_filename))
     

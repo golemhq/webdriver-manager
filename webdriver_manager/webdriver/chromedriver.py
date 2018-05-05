@@ -1,5 +1,3 @@
-import zipfile
-
 import requests
 
 from .. import config, helpers
@@ -43,8 +41,5 @@ class Chromedriver(Basedriver):
     def get_remote_file(self, remote_version):
         url = self._get_chromedriver_download_url(remote_version)
         bytes_io = helpers.download_file_with_progress_bar(url)
-        zipf = zipfile.ZipFile(bytes_io) 
-        file_list = zipf.namelist()
         expected_file = 'chromedriver.exe' if self.os_name == 'windows' else 'chromedriver'
-        chromedriver_file = zipf.read(expected_file)
-        return chromedriver_file
+        return helpers.extract_file_from_zip(bytes_io, expected_file)

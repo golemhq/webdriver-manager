@@ -1,14 +1,16 @@
 import sys
 import os
 import platform
-from distutils.version import StrictVersion
 import io
+import zipfile
+import tarfile
+import shutil
+from distutils.version import StrictVersion
 
 import requests
 from tqdm import tqdm
 
 from .logger import logger
-from .webdriver import chromedriver, geckodriver
 
 
 EXPECTED_MAXSIZE_32 = 2**31 - 1
@@ -74,6 +76,9 @@ def get_platform():
 
 
 def get_driver_class(driver_name):
+    # declare imports here to avoid circular import
+    from . webdriver import chromedriver
+    from . webdriver import geckodriver
     driver_class = None
     if driver_name == 'chromedriver':
         driver_class = chromedriver.Chromedriver
@@ -129,3 +134,19 @@ def extract_version_from_filename(filename):
         return components[1]
     else:
         return None
+
+
+def extract_file_from_zip(bytes_io, expected_file):
+    """Extracts a file from a bytes_io zip. Returns bytes"""
+    zipf = zipfile.ZipFile(bytes_io) 
+    return zipf.read(expected_file)
+
+
+def extract_file_from_tar(bytes_io, expected_file):
+    """extract a file from a bytes_io tar. Returns bytes"""
+    with open('temp', 'wb+') as f:
+        bytes_io.seek(0)
+        shutil.copyfileobj(bytes_io, f, length=131072)
+    tar = tarfile.open('temp', mode='r:gz')
+    os.remove('temp')
+    return tar.extractfile(expected_file).read()

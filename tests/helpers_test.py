@@ -51,6 +51,7 @@ class Test_normalize_outputdir:
         expected = os.path.join(dir_session['path'], 'example')
         assert outputdir == expected
 
+    @pytest.mark.skipif('helpers.get_platform()["os_name"] != "windows"')
     def test_normalize_outputdir_beginning_dot_backslash(self, dir_session):
         os.chdir(dir_session['path'])
         outputdir = helpers.normalize_outputdir('.\example')
@@ -159,3 +160,4 @@ class Test_download_file_with_progress_bar:
         msg = ('there was a 404 error trying to reach {} \nThis probably '
                'means the requested version does not exist.'.format(url))
         assert caplog.records[0].message == msg
+
