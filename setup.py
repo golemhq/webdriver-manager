@@ -19,7 +19,7 @@ class PyTest(TestCommand):
 
 
 setup(
-    name='webdriver-manager',
+    name='py-webdriver-manager',
     version='0.0.1',
     description='Webdriver executable manager utility',
     url='https://github.com/lucianopuccio/webdriver-manager',
@@ -38,7 +38,7 @@ setup(
         ],
     keywords='test selenium webdriver webdriver-manager',
     packages=find_packages(),
-    install_requires=['requests', 'tqdm'],
+    install_requires=['requests', 'tqdm==4.23.1'],
     tests_require=['pytest'],
     include_package_data=True,
     entry_points={

@@ -5,14 +5,16 @@ Webdriver Manager
 
 A Selenium Webdriver executable manager utility written in Python.
 
-# Installation
+Installation
+---------------
 
 Requires Python 3.4+ and PIP.
 ```
-pip install ?
+pip install py-webdriver-manager
 ```
 
-# Download webdriver executables
+Download webdriver executables
+---------------
 
 ```
 webdriver-manager update
@@ -38,7 +40,8 @@ webdriver-manager update -d chrome firefox
 webdriver-manager update -d chrome=2.38
 ```
 
-# Clean local webdriver files
+Clean local webdriver files
+---------------
 
 ```
 webdriver-manager clean
@@ -46,13 +49,15 @@ webdriver-manager clean
 
 Use the -o flag to specify an output directory and the -d flag to specify a webdriver.
 
-# List local versions
+List local versions
+---------------
 
 ```
 webdriver-manager versions [-d | -o] 
 ```
 
-# Using webdriver manager from code
+Using webdriver manager from code
+---------------
 
 **Functions:**
 
@@ -66,7 +71,7 @@ webdriver-manager versions [-d | -o]
 **Example usage**
 
 ```
-from webdriver_manager as wm
+import webdriver_manager as wm
 
 wm.update('chrome', './executables', version='2.38')
 wm.update('firefox', './executables')
@@ -79,4 +84,3 @@ versions = wm.versions('./executables', ['chrome', 'firefox'])
 
 wm.clean('./executables', ['chrome', 'firefox=0.20.1'])
 ```
-
