@@ -1,7 +1,5 @@
 import os
 
-import requests
-
 from .. import helpers
 from ..logger import logger
 

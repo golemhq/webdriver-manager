@@ -6,5 +6,6 @@
 .coverage/
 .eggs/
 .tox
+.idea
 build/
 dist/

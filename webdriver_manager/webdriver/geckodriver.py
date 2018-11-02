@@ -1,5 +1,3 @@
-import zipfile
-
 import requests
 
 from .. import config, helpers

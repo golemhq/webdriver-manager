@@ -1,4 +1,3 @@
-import os
 import sys
 
 from . import helpers, config, arg_parser, update, clean, versions
