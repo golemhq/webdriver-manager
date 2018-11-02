@@ -32,7 +32,7 @@ class Geckodriver(Basedriver):
                                 version, filename)
         return url
 
-    def get_latest_remote_version(self, strict=True):
+    def get_latest_remote_version(self, strict=False):
         if self.latest_remote_version:
             latest_version = self.latest_remote_version
         else:
