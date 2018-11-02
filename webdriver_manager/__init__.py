@@ -3,7 +3,7 @@ import os
 from . import helpers, config
 from .logger import logger
 
-__version__ = '0.0.1'
+__version__ = '0.0.2'
 
 
 def update(driver_name, outputdir, version=None):
