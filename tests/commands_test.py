@@ -2,7 +2,8 @@ import os
 
 import pytest
 
-from webdriver_manager import update, clean, versions, helpers
+from webdriver_manager import helpers
+from webdriver_manager.commands import update, clean, versions
 from webdriver_manager.webdriver.chromedriver import Chromedriver
 from webdriver_manager.webdriver.geckodriver import Geckodriver
 
