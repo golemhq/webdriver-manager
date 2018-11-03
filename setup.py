@@ -1,8 +1,13 @@
+import io
 import os
+import re
+
 from setuptools import setup, find_packages
 from setuptools.command.test import test as TestCommand
 
-import webdriver_manager
+
+with io.open('webdriver_manager/__init__.py', 'rt', encoding='utf8') as f:
+    version = re.search(r'__version__ = \'(.*?)\'', f.read()).group(1)
 
 
 here = os.path.abspath(os.path.dirname(__file__))
@@ -22,7 +27,7 @@ class PyTest(TestCommand):
 
 setup(
     name='py-webdriver-manager',
-    version=webdriver_manager.__version__,
+    version=version,
     description='Webdriver executable manager utility',
     url='https://github.com/lucianopuccio/webdriver-manager',
     license='MIT',
