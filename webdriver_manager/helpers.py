@@ -5,7 +5,7 @@ import io
 import zipfile
 import tarfile
 import shutil
-from distutils.version import StrictVersion
+from distutils.version import StrictVersion, LooseVersion
 
 import requests
 from tqdm import tqdm
@@ -91,6 +91,10 @@ def get_driver_class(driver_name):
 
 def strict_version(version):
     return StrictVersion(version)
+
+
+def loose_version(version):
+    return LooseVersion(version)
 
 
 def split_driver_name_and_version(driver_name):

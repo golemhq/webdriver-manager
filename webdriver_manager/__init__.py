@@ -3,7 +3,7 @@ from .commands import clean as clean_command
 from .commands import versions as versions_command
 
 
-__version__ = '0.0.2'
+__version__ = '0.0.3'
 
 
 def update(driver_name, outputdir, version=None):

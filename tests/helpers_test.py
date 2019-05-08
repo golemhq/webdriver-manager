@@ -40,8 +40,8 @@ class Test_normalize_outputdir:
     @pytest.mark.skipif('helpers.get_platform()["os_name"] != "windows"')
     def test_normalize_outputdir_beginning_backslash(self, dir_session):
         os.chdir(dir_session['path'])
-        outputdir = helpers.normalize_outputdir('\example')
-        expected = os.path.abspath('\example')
+        outputdir = helpers.normalize_outputdir('\\example')
+        expected = os.path.abspath('\\example')
         assert outputdir == expected
 
     @pytest.mark.skipif('helpers.get_platform()["os_name"] != "windows"')
@@ -54,7 +54,7 @@ class Test_normalize_outputdir:
     @pytest.mark.skipif('helpers.get_platform()["os_name"] != "windows"')
     def test_normalize_outputdir_beginning_dot_backslash(self, dir_session):
         os.chdir(dir_session['path'])
-        outputdir = helpers.normalize_outputdir('.\example')
+        outputdir = helpers.normalize_outputdir('.\\example')
         expected = os.path.join(dir_session['path'], 'example')
         assert outputdir == expected
 
@@ -91,7 +91,6 @@ class Test_normalize_outputdir:
         outputdir = helpers.normalize_outputdir('.\\b\\n\\t')
         expected = os.path.join(dir_session['path'], 'b', 'n', 't')
         assert outputdir == expected
-
 
 
 class Test_normalize_driver_name:

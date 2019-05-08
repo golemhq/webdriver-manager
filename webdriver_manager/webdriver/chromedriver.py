@@ -24,7 +24,7 @@ class Chromedriver(Basedriver):
                                 version, filename)
         return url
 
-    def get_latest_remote_version(self, strict=False):
+    def get_latest_remote_version(self, strict=False, loose=False):
         if self.latest_remote_version:
             latest_version = self.latest_remote_version
         else:
@@ -36,6 +36,8 @@ class Chromedriver(Basedriver):
                 raise Exception('Could not get latest remote version for chromedriver')
         if strict:
             latest_version = helpers.strict_version(latest_version)
+        elif loose:
+            latest_version = helpers.loose_version(latest_version)
         return latest_version
 
     def get_remote_file(self, remote_version):

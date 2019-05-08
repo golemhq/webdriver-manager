@@ -29,12 +29,12 @@ class Basedriver:
             full_filename = full_filename + '.exe'
         return full_filename
 
-    def get_latest_local_version(self, strict=True):
+    def get_latest_local_version(self, strict=False, loose=False):
         """Get the latest local version in the outputdir.
         If no version is found, returns '0.0'
         """
         latest_version = '0.0'
-        # check if it already exists and it's version
+        # check if it already exists and its version
         files = os.listdir(self.outputdir) if os.path.isdir(self.outputdir) else []
         webdriver_files = [x for x in files if x.startswith(self.base_filename)]
         if webdriver_files:
@@ -45,11 +45,13 @@ class Basedriver:
                 latest_version = extracted_version
         if strict:
             latest_version = helpers.strict_version(latest_version)
+        elif loose:
+            latest_version = helpers.loose_version(latest_version)
         return latest_version
 
     def is_remote_higher_than_local(self):
-        latest_local = self.get_latest_local_version(strict=True)
-        latest_remote = self.get_latest_remote_version(strict=True)
+        latest_local = self.get_latest_local_version(loose=True)
+        latest_remote = self.get_latest_remote_version(loose=True)
         return latest_remote > latest_local
 
     def download_driver_executable(self, version):
