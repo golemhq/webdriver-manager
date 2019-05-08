@@ -1,14 +1,15 @@
 Webdriver Manager
 ==================================================
-[![Build Status](https://travis-ci.org/lucianopuccio/webdriver-manager.svg?branch=master)](https://travis-ci.org/lucianopuccio/webdriver-manager)
+[![Build Status](https://travis-ci.org/golemhq/webdriver-manager.svg?branch=master)](https://travis-ci.org/golemhq/webdriver-manager)
 
 
-A Selenium Webdriver executable manager utility written in Python.
+A Selenium Webdriver executable manager utility for Python.
 
 Installation
 ---------------
 
-Requires Python 3.4+ and PIP.
+Requires Python 3.5+
+
 ```
 pip install py-webdriver-manager
 ```
