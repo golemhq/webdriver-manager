@@ -4,15 +4,17 @@ from . import config, helpers
 from .logger import logger
 
 
-def update(driver_name, outputdir, version=None):
-    """Update local driver executable to the latest version or
-    a specific version.
+def update(driver_name, outputdir=None, version=None):
+    """Update local driver executable to the latest version or a specific version.
     driver : a driver name. Options:
-     - chrome, chromedriver
-     - firefox, gecko, geckodriver
+      - chrome, chromedriver
+      - firefox, gecko, geckodriver
+    When outputdir is None, ./drivers will be used if it exists,
+      the cwd will be used otherwise
     """
     platform = helpers.get_platform()
     driver_name = helpers.normalize_driver_name(driver_name)
+    outputdir = helpers.normalize_outputdir(outputdir)
     driver_class = helpers.get_driver_class(driver_name)
     driver = driver_class(outputdir, platform['os_name'], platform['os_bits'])
     if version:
@@ -24,12 +26,15 @@ def update(driver_name, outputdir, version=None):
         logger.info('{} is up to date'.format(driver_name))
 
 
-def clean(outputdir, drivers=None):
+def clean(outputdir=None, drivers=None):
     """Remove driver executables from the specified outputdir.
 
-    drivers can be a list of drivers to filter which executables
-    to remove. Specify a version using an equal sign i.e.: 'chrome=2.2'
+    Drivers can be a list of drivers to filter which executables
+      to remove. Specify a version using an equal sign i.e.: 'chrome=2.2'
+    When outputdir is None, ./drivers will be used if it exists,
+      the cwd will be used otherwise
     """
+    outputdir = helpers.normalize_outputdir(outputdir)
     if drivers:
         # Generate a list of tuples: [(driver_name, requested_version)]
         # If driver string does not contain a version, the second element
@@ -67,8 +72,9 @@ def clean(outputdir, drivers=None):
                     break
 
 
-def versions(outputdir, drivers=None):
+def versions(outputdir=None, drivers=None):
     found_versions = {}
+    outputdir = helpers.normalize_outputdir(outputdir)
     files = os.listdir(outputdir)
     for file in files:
         for base_filename in config.ALL_DRIVERS:
@@ -79,8 +85,8 @@ def versions(outputdir, drivers=None):
                 found_versions[base_filename].append(item)
 
     # sort versions
-    for driver, versions in found_versions.items():
-        found_versions[driver] = sorted(versions)
+    for driver, vers in found_versions.items():
+        found_versions[driver] = sorted(vers)
 
     if drivers:
         # filter found_versions to only the required drivers
@@ -93,11 +99,10 @@ def versions(outputdir, drivers=None):
 
     for base_driver_filename, files in found_versions.items():
         # versions = [helpers.extract_version_from_filename(file) for file in files]
-        versions = [item[0] for item in files]
-        version_string = ', '.join(versions)
-        plural = 's' if len(versions) > 1 else ''
-        msg = '{} version{} found: {}'.format(base_driver_filename, plural,
-                                              version_string)
+        vers = [item[0] for item in files]
+        version_string = ', '.join(vers)
+        plural = 's' if len(vers) > 1 else ''
+        msg = '{} version{} found: {}'.format(base_driver_filename, plural, version_string)
         logger.info(msg)
 
     return found_versions
