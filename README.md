@@ -1,7 +1,6 @@
 Webdriver Manager
 ==================================================
-[![Build Status](https://travis-ci.org/golemhq/webdriver-manager.svg?branch=master)](https://travis-ci.org/golemhq/webdriver-manager)
-
+[![Build Status](https://travis-ci.com/golemhq/webdriver-manager.svg?branch=master)](https://travis-ci.com/golemhq/webdriver-manager)
 
 A Selenium Webdriver executable manager utility for Python.
 
