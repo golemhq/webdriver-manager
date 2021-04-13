@@ -1,21 +1,16 @@
 language: python
+dist: xenial
 
 python:
-  - "3.4"
-  - "3.5"
-  - "3.6"
+  - '3.5'
+  - '3.6'
+  - '3.7'
+  - '3.8'
+  - '3.9'
 
 install:
   - python setup.py install
   - pip install --upgrade pytest
-  # travis uses an older version of pytest for python 3.4 and 3.6
-  # update always
-  #- if [[ $TRAVIS_PYTHON_VERSION == 3.4 ]]; then pip install --upgrade pytest; fi 
 
 script: 
-  - pytest
-
-branches:
-  only:
-    - master
-    - develop
+  - pytest tests
